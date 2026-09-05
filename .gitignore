@@ -1,8 +1,12 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# Reglas sin barra inicial a propósito: el repo tiene varios proyectos
+# hermanos (web/, voice-agent/), cada uno con su propio node_modules, build,
+# etc. Una regla anclada a la raíz (ej. "/node_modules") solo cubriría la
+# raíz del repo, no la de cada subproyecto.
 
 # dependencies
-/node_modules
-/.pnp
+node_modules
+.pnp
 .pnp.*
 .yarn/*
 !.yarn/patches
@@ -11,14 +15,14 @@
 !.yarn/versions
 
 # testing
-/coverage
+coverage
 
 # next.js
-/.next/
-/out/
+.next/
+out/
 
 # production
-/build
+build
 
 # misc
 .DS_Store
