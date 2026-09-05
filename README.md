@@ -44,10 +44,16 @@ Descarté *matching con catálogo*, *resumen LLM* y *siguiente mejor acción* po
 - `Intl.NumberFormat('es-ES', { style: 'currency', ... })` en Node devolvía `"1400 €"` (sin separador de miles) para números de 4 cifras pero sí agrupaba en números de 6 cifras (`"350.000 €"`) — un comportamiento inconsistente del `useGrouping` por defecto. Lo detecté verificando manualmente contra la API con `curl` los casos de presupuesto de varios contactos en vez de asumir que "compila" significaba "correcto", y lo arreglé forzando `useGrouping: true` explícito.
 - No pude verificar visualmente el resultado en un navegador real (no hay herramienta de captura de pantalla en este entorno) — la verificación se hizo por tipado estricto (`tsc --noEmit`), lint, y comprobación de la respuesta real de la API contra los casos límite del dataset (duplicados, cumplimiento, fechas, cualificación en sus 3 formas). La fidelidad visual final a la guía de Kontaktu queda pendiente de un vistazo humano en el navegador.
 
+## Bonus: agente de voz (LiveKit)
+
+Implementado en [`voice-agent/`](voice-agent/) como paquete Node/TypeScript separado (un agente de voz es un worker de larga duración, no encaja en el modelo request-response de las route handlers de Next). Usa `kb-propiedades-voz.json` como base de conocimiento a través de la tool `buscar_propiedades(zona, presupuesto_max, operacion)`, habla en español de España, y se despide y cuelga solo (`beta.createEndCallTool()`) — el punto extra que pide el enunciado. Todo el STT/LLM/TTS corre sobre LiveKit Inference, incluido en el plan free de LiveKit Cloud, sin necesidad de dar de alta claves sueltas de otros proveedores.
+
+Ver [`voice-agent/README.md`](voice-agent/README.md) para cómo configurarlo y probarlo — necesita credenciales de un proyecto de LiveKit Cloud que solo tú puedes crear. El paquete completo compila (`tsc --noEmit`) contra los tipos reales de `@livekit/agents@1.8.0`, y la lógica de búsqueda del catálogo se probó de forma aislada; lo que no pude verificar es la conversación de voz de extremo a extremo, al no tener ni las credenciales ni micrófono/altavoz en este entorno.
+
 ## Qué haría con un día más
 
 - Construir el flujo de fusión de duplicados de verdad (hoy solo se propone en el banner).
 - *Salud del dato*: indicador de completitud, barato de añadir ahora que ya se recorren todas las claves dinámicas de cualificación.
 - *Siguiente mejor acción* con reglas simples (sin LLM) aprovechando `ai_handoff` (ej. `c-016`, contacto que pidió hablar con un humano tras una visita cancelada) — señal que ya está en el dataset y hoy no se muestra en ningún sitio.
 - Tests unitarios para `src/lib/phone.ts`, `dates.ts` y `qualification.ts`, que son la parte con más lógica de casos límite y ningún test todavía.
-- El agente de voz de LiveKit (bonus), una vez cerrado lo anterior.
+- Conectar el agente de voz a un número de teléfono real vía telefonía SIP de LiveKit (Twilio u otro trunk), que es la pieza que falta para que "atienda la llamada de la agencia" de verdad y no solo una room de WebRTC.
