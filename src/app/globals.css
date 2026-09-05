@@ -1,26 +1,38 @@
 @import "tailwindcss";
 
+/*
+ * Tokens extraídos del bundle CSS público de kontaktuai.com (Tailwind v4,
+ * `assets/index-QLrT1KC-.css`) el 2026-09-04. El material de diseño oficial
+ * adjunto al reto (guia-diseno-kontaktu.md + capturas) no llegó en el paquete,
+ * así que reconstruimos la paleta/tipografía real de la marca a partir del
+ * sitio en vez de inventar una. Ver README para el detalle de esta decisión.
+ */
+@theme {
+  --font-sans: var(--font-inter), "Inter", ui-sans-serif, sans-serif;
+  --font-brand: var(--font-outfit), "Outfit", ui-sans-serif, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), "JetBrains Mono", ui-monospace, monospace;
+
+  --color-kontaktu-orange: #ff6b00;
+  --color-kontaktu-orange-deep: #e25c00;
+  --color-kontaktu-black: #0a0a0a;
+
+  --color-surface-1: #fafaf7;
+  --color-surface-2: #f4f4ee;
+  --color-surface-3: #ececdf;
+
+  --radius-card: 20px;
+  --radius-mockup: 14px;
+
+  --shadow-float: 0 24px 60px -20px #14120e2e, 0 8px 16px -8px #14120e14;
+  --shadow-mockup: 0 30px 60px -24px #14120e47, 0 12px 24px -8px #14120e1a;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  color-scheme: light;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-surface-1);
+  color: var(--color-kontaktu-black);
+  font-family: var(--font-sans);
 }
