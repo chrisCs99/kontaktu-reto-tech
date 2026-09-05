@@ -9,6 +9,7 @@ Es un paquete Node/TypeScript **separado** del proyecto Next.js: un agente de Li
 - **LLM, STT y TTS vía LiveKit Inference** (`inference.LLM/TTS`, `stt: "auto:es"`): no hace falta dar de alta ni pagar Deepgram/OpenAI/ElevenLabs por separado — todo se sirve a través del proyecto de LiveKit Cloud y entra dentro del plan free, tal como pide el enunciado.
 - **Voz en español de España**: `gradium/default` con la voz "Vera" (`es-ES`), en vez de una voz por defecto en inglés o español de México.
 - **`beta.createEndCallTool()`**: es una tool ya construida por LiveKit específicamente para esto — el agente decide cuándo la conversación ha terminado, genera una despedida y cuelga (borra la room), en vez de dejar la llamada abierta en silencio. Es el "punto extra" que pide el enunciado.
+- **Copia propia de `kb-propiedades-voz.json`** (`voice-agent/src/data/`): al desplegar en un host con "Root Directory" separado (Railway, igual que hicimos con Vercel para la app Next.js), el contenedor solo ve el contenido de `voice-agent/` — no el resto del monorepo. Referenciar el JSON original de `src/data/` con una ruta relativa funcionaba en local pero rompía en producción con `ENOENT`. La solución es que el paquete sea autocontenido, aunque eso duplique el archivo entre los dos proyectos.
 
 ## Configurar
 

@@ -4,9 +4,13 @@ import path from "node:path";
 import { z } from "zod";
 import { tool, dedent } from "@livekit/agents";
 
+// Copia propia dentro de voice-agent/ (no una referencia a ../src/data del
+// proyecto Next.js): este paquete se despliega de forma independiente
+// (Root Directory separado en Railway) y no tiene acceso al resto del repo
+// en tiempo de ejecución.
 const KB_PATH = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
-  "../../../src/data/kb-propiedades-voz.json"
+  "../data/kb-propiedades-voz.json"
 );
 
 interface Property {
